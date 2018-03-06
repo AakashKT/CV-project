@@ -23,7 +23,7 @@ class Graph:
         return newGraph
 
 
-def findPath(graph, u, v):
+def getDfsTree(graph, u, v):
     """
     @type graph:Graph
     @type u:int
@@ -61,7 +61,7 @@ def maxflow(graph, u, v):
     maximumFlow = 0
     while True:
 
-        parents = findPath(residualGraph, u, v)
+        parents = getDfsTree(residualGraph, u, v)
         # check if vertex v is reachable
         if parents[v] is None:
             break
@@ -81,13 +81,19 @@ def maxflow(graph, u, v):
             residualGraph.adjacencyList[i][parents[i]
                                            ] = residualGraph.adjacencyList[i][parents[i]]+bottleNeck
             i = parents[i]
-    return maximumFlow
+    partition = [v]*residualGraph.numberOfVertices
+    parents = getDfsTree(residualGraph, u, v)
+    for vertex, isVisited in enumerate(parents):
+        if isVisited is not None:
+            partition[vertex] = u
+    return maximumFlow, partition
 
 
 edgel = [
     (0, 1, 1), (1, 0, 0),
     (0, 2, 1), (2, 0, 0),
     (1, 3, 1), (3, 1, 0),
-    (2, 3, 1), (3, 2, 0)]
+    (2, 3, 1), (3, 2, 0)
+]
 g = Graph(4, edgel)
 print maxflow(g, 0, 3)
