@@ -1,0 +1,91 @@
+
+VisualSFM 3D reconstruction, begin...
+Searching images in the specified folder
+0: 161129-ECE-Paris_Lille
+image_size:	648x430
+#sift count:	2780
+
+1: 39429681525_2411166fcb_b
+image_size:	1024x653
+#sift count:	4635
+
+2: institut-de-france--acad-mie-fran-aise--from-pont-168194249-59fb89deaad52b00372925c3
+image_size:	768x512
+#sift count:	3699
+
+3: linstitut-de-france-coupole-de-lacadmie-franaise-building-paris-france-APMWBM
+image_size:	1300x1055
+#sift count:	10067
+
+4: paris-academie-francaise
+image_size:	300x450
+#sift count:	1356
+
+Loading image pixel data ...done in 0s
+Compute all missing matches
+0 pairs to compute match
+Save to /home/aakash/Desktop/CV/test.nvm ... done
+6 pairs have two-view models
+10 pairs have fundamental matrices
+Initialize with ins..925c3 and par..caise
+94 3D points initialized from two images
+PBA library version = 105
+PBA: 94 3D pts, 2 cams and 188 projs...
+PBA: 0.061 -> 0.042 (2 LMs in 0.13sec)
+Focal Length : [921.600]->[923.791]
+Focal Length : [540.000]->[539.336]
+
+#############################
+#3: [394..fcb_b] sees 101 (+160) 3D points
+Estimated Focal Length [803][0.78N]
+# 161 projs (54 pts and 0 merges)
+PBA: 148 3D pts, 3 cams and 349 projs...
+PBA: 0.059 -> 0.057 (6 LMs in 0.01sec)
+
+**************************************
+#3/3:  164 projs and 54 pts added.
+PBA: 148 3D pts, 3 cams and 352 projs...
+PBA: 0.058 -> 0.056 (6 LMs in 0.01sec)
+PBA: 148 3D pts, 3 cams and 352 projs...
+PBA: 0.056 -> 0.055 (6 LMs in 0.01sec)
+Focal Length : [803.016]->[803.075]
+Radial Distortion : [-0.001 -> -1]
+
+#############################
+#4: [161..Lille] sees 61 (+58) 3D points
+Estimated Focal Length [329][0.51W]
+# 138 projs (51 pts and 0 merges)
+PBA: 199 3D pts, 4 cams and 490 projs...
+PBA: 1.205 -> 0.224 (3 LMs in 0.01sec)
+#points w/ large errors:	1
+#unstable points removed:	1
+Radial Distortion : [0.040 -> 16]
+# 2 projs (1 pts and 0 merges)
+Focal Length : [328.782]->[283.334]
+Radial Distortion : [0.040 -> 16]
+END: No more images to add [0 projs]
+
+#############################
+Failed to find two images for initialization
+Resuming SfM finished, 0 sec used
+
+---------------------------------------------------
+4 cams, 200 pts (3+: 69)
+492 projections (3+: 230)
+---------------------------------------------------
+1 model(s) reconstructed from 5 images;
+4 modeled; 0 reused; 0 EXIF; 
+0MB(0) used to store feature location.
+---------------------------------------------------
+
+########-------timing------#########
+Structure-From-Motion finished, 0 sec used
+0.2(0.2) seconds on Bundle Adjustment (+)
+0.2(0.2) seconds on Bundle Adjustment (*)
+#############################
+Save to /home/aakash/Desktop/CV/test.nvm ... done
+----------------------------------------------------------------
+VisualSFM 3D reconstruction, finished
+Totally 0.000 seconds used
+
+__LogFile: /home/aakash/Desktop/CV/vsfm/bin/log/[18_03_06][17_15_57][109].log

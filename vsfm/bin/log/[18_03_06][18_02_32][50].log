@@ -1,0 +1,116 @@
+0: 161129-ECE-Paris_Lille
+image_size:	648x430
+#sift count:	2780
+
+1: 39429681525_2411166fcb_b
+image_size:	1024x653
+#sift count:	4635
+
+2: institut-de-france--acad-mie-fran-aise--from-pont-168194249-59fb89deaad52b00372925c3
+image_size:	768x512
+#sift count:	3699
+
+3: linstitut-de-france-coupole-de-lacadmie-franaise-building-paris-france-APMWBM
+image_size:	1300x1055
+#sift count:	10067
+
+4: paris-academie-francaise
+image_size:	300x450
+#sift count:	1356
+
+Loading image pixel data ...done in 0s
+
+Compute Missing Pairwise Matching, begin...
+0 pairs to compute match
+----------------------------------------------------------------
+Compute Missing Pairwise Matching, finished
+Totally 0.000 seconds used
+
+
+Run full 3D reconstruction, begin...
+7 pairs have two-view models
+10 pairs have fundamental matrices
+Initialize with 161..Lille and 394..fcb_b
+50 3D points initialized from two images
+PBA library version = 105
+PBA: 50 3D pts, 2 cams and 100 projs...
+PBA: 0.100 -> 0.100 (0 LMs in 0.08sec)
+Focal Length : [777.600]->[777.600]
+Focal Length : [1228.800]->[1228.800]
+END: No more images to add [0 projs]
+
+#############################
+Initialize with ins..925c3 and par..caise
+81 3D points initialized from two images
+PBA: 81 3D pts, 2 cams and 162 projs...
+PBA: 0.064 -> 0.036 (5 LMs in 0.07sec)
+Focal Length : [921.600]->[921.662]
+Focal Length : [540.000]->[539.803]
+
+#############################
++3: [394..fcb_b] sees 81 (+172) 3D points
+Estimated Focal Length [649][0.63W]
+# 87 projs (22 pts and 0 merges)
+PBA: 103 3D pts, 3 cams and 249 projs...
+PBA: 0.070 -> 0.042 (2 LMs in 0.01sec)
+
+**************************************
+#3/3:  104 projs and 28 pts added.
+PBA: 109 3D pts, 3 cams and 266 projs...
+PBA: 18.152 -> 0.442 (50 LMs in 0.12sec)
+PBA: 109 3D pts, 3 cams and 266 projs...
+PBA: 0.442 -> 0.244 (6 LMs in 0.01sec)
+Focal Length : [649.462]->[639.827]
+Radial Distortion : [-0.696 -> -229]
+
+#############################
++4: [161..Lille] sees 50 (+62) 3D points
+Estimated Focal Length [2099][3.24N]
+# 106 projs (34 pts and 0 merges)
+PBA: 143 3D pts, 4 cams and 372 projs...
+PBA: 2.821 -> 0.134 (16 LMs in 0.06sec)
+Focal Length : [2098.609]->[1620.471]
+Radial Distortion : [-0.424 -> -6]
+END: No more images to add [0 projs]
+
+#############################
+Failed to find two images for initialization
+NOTE: 1 small models are deleted
+Resuming SfM finished, 1 sec used
+
+---------------------------------------------------
+4 cams, 144 pts (3+: 64)
+372 projections (3+: 214)
+---------------------------------------------------
+1 model(s) reconstructed from 5 images;
+4 modeled; 0 reused; 0 EXIF; 
+0MB(0) used to store feature location.
+---------------------------------------------------
+
+########-------timing------#########
+Structure-From-Motion finished, 1 sec used
+0.4(0.4) seconds on Bundle Adjustment (+)
+0.4(0.4) seconds on Bundle Adjustment (*)
+#############################
+----------------------------------------------------------------
+Run full 3D reconstruction, finished
+Totally 1.000 seconds used
+
+
+Compute remaining photos, begin...
+END: No more images to add [0 projs]
+
+#############################
+
+---------------------------------------------------
+4 cams, 144 pts (3+: 64)
+372 projections (3+: 214)
+---------------------------------------------------
+1 model(s) reconstructed from 5 images;
+4 modeled; 0 reused; 0 EXIF; 
+0MB(0) used to store feature location.
+---------------------------------------------------
+----------------------------------------------------------------
+Compute remaining photos, finished
+Totally 0.000 seconds used
+

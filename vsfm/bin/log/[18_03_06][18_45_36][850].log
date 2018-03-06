@@ -1,0 +1,199 @@
+0: img1
+image_size:	800x640
+1: img2
+image_size:	800x640
+2: img3
+image_size:	800x640
+3: img4
+image_size:	800x640
+4: img5
+image_size:	800x640
+5: img6
+image_size:	800x640
+Loading image pixel data ...done in 0s
+
+Compute Missing Pairwise Matching, begin...
+********* WARNING ***********
+More than 187MB of graphic memory may be allocated
+under the default settings. If the program halts here,
+adjust parameters to save memory and rerun the task: 
+    [Tools->Enable GPU->Set Maximum DIM]
+Note some octaves may be automatically skipped
+SIFT: 0000, 800x640, 	4315, 0.39sec
+SIFT: 0001, 800x640, 	4619, 0.05sec
+SIFT: 0002, 800x640, 	5227, 0.05sec
+SIFT: 0003, 800x640, 	5508, 0.05sec
+SIFT: 0004, 800x640, 	5755, 0.05sec
+SIFT: 0005, 800x640, 	6482, 0.06sec
+
+###########-------timing------#########
+6 Feature Detection finished, 1 sec used
+#############################
+
+15 pairs to compute match
+NOTE: using 2 matching workers
+0000 and 0001: 1517 matches, 0.17sec, #0
+0000 and 0001: [1446/1517], H[1112], 0.01sec
+0002 and 0004: 319 matches, 0.19sec, #1
+0002 and 0004: [210/319], H[142], 0.01sec
+0000 and 0002: 646 matches, 0.03sec, #0
+0000 and 0002: [556/646], H[206], 0.01sec
+0001 and 0002: 1410 matches, 0.05sec, #0
+0001 and 0002: [1310/1410], H[913], 0.01sec
+0000 and 0003: 146 matches, 0.04sec, #0
+0003 and 0004: 1313 matches, 0.17sec, #1
+0003 and 0004: [1199/1313], H[832], 0.01sec
+0000 and 0003: [79/146], H[35], 0.04sec
+0001 and 0003: 383 matches, 0.05sec, #0
+0001 and 0003: [275/383], H[115], 0.01sec
+0002 and 0003: 1666 matches, 0.04sec, #0
+0002 and 0003: [1564/1666], H[964], 0.01sec
+0000 and 0005: 58 matches, 0.17sec, #1
+0000 and 0004: 80 matches, 0.03sec, #0
+0000 and 0005: [11/58], H[5], 0.08sec
+0000 and 0004: [11/80], H[6], 0.08sec
+0001 and 0004: 88 matches, 0.05sec, #0
+0001 and 0004: [18/88], H[5], 0.10sec
+0001 and 0005: 78 matches, 0.18sec, #1
+0002 and 0005: 101 matches, 0.04sec, #0
+0001 and 0005: [14/78], H[5], 0.07sec
+0002 and 0005: [16/101], H[5], 0.08sec
+0003 and 0005: 261 matches, 0.06sec, #0
+0003 and 0005: [171/261], H[94], 0.00sec
+0004 and 0005: 1728 matches, 0.20sec, #1
+0004 and 0005: [1612/1728], H[1259], 0.01sec
+
+###########-------timing------#########
+15 Image Match finished, 1 sec used
+#############################
+
+----------------------------------------------------------------
+Compute Missing Pairwise Matching, finished
+Totally 2.000 seconds used
+
+
+Run full 3D reconstruction, begin...
+9 pairs have two-view models
+15 pairs have fundamental matrices
+Initialize with img1 and img3
+556 3D points initialized from two images
+PBA library version = 105
+PBA: 556 3D pts, 2 cams and 1112 projs...
+PBA: 0.067 -> 0.060 (1 LMs in 0.08sec)
+Focal Length : [960.000]->[960.896]
+Focal Length : [960.000]->[960.220]
+
+#############################
+#3: [img2] sees 769 (+1687) 3D points
+Estimated Focal Length [919][1.15N]
+# 4060 projs (1684 pts and 0 merges)
+PBA: 2240 3D pts, 3 cams and 5172 projs...
+PBA: 0.144 -> 0.084 (1 LMs in 0.01sec)
+
+**************************************
+#3/3:  4062 projs and 1685 pts added.
+PBA: 2239 3D pts, 3 cams and 5170 projs...
+PBA: 0.082 -> 0.080 (1 LMs in 0.02sec)
+PBA: 2239 3D pts, 3 cams and 5170 projs...
+PBA: 0.080 -> 0.079 (1 LMs in 0.00sec)
+Focal Length : [919.398]->[918.632]
+Radial Distortion : [-0.015 -> -2]
+
+#############################
+#4: [img4] sees 1047 (+1236) 3D points
+Estimated Focal Length [1049][1.31N]
+# 1929 projs (577 pts and 3 merges)
+PBA: 2811 3D pts, 4 cams and 7095 projs...
+PBA: 0.214 -> 0.137 (1 LMs in 0.03sec)
+#points w/ large errors:	3
+Focal Length : [1049.271]->[1051.664]
+Radial Distortion : [-0.004 -> -1]
+
+#############################
+#5: [img5] sees 652 (+744) 3D points
+Estimated Focal Length [1011][1.26N]
+# 1399 projs (430 pts and 2 merges)
+PBA: 3236 3D pts, 5 cams and 8486 projs...
+PBA: 0.275 -> 0.197 (1 LMs in 0.01sec)
+#points w/ large errors:	1
+
+**************************************
+#5/5:  1410 projs and 435 pts added.
+PBA: 3240 3D pts, 5 cams and 8495 projs...
+PBA: 0.196 -> 0.194 (1 LMs in 0.03sec)
+PBA: 3240 3D pts, 5 cams and 8495 projs...
+PBA: 0.194 -> 0.193 (1 LMs in 0.03sec)
+Focal Length : [1010.638]->[1011.952]
+Radial Distortion : [-0.009 -> -1]
+
+#############################
+#6: [img6] sees 575 (+1194) 3D points
+Estimated Focal Length [1034][1.29N]
+# 1507 projs (516 pts and 0 merges)
+PBA: 3755 3D pts, 6 cams and 10000 projs...
+PBA: 0.309 -> 0.173 (1 LMs in 0.01sec)
+#points w/ large errors:	2
+Focal Length : [1034.364]->[1033.178]
+Radial Distortion : [0.008 -> 0]
+END: No more images to add [0 projs]
+
+#############################
+Failed to find two images for initialization
+Resuming SfM finished, 0 sec used
+
+---------------------------------------------------
+6 cams, 3757 pts (3+: 1494)
+10002 projections (3+: 5478)
+---------------------------------------------------
+1 model(s) reconstructed from 6 images;
+6 modeled; 0 reused; 0 EXIF; 
+0MB(0) used to store feature location.
+---------------------------------------------------
+
+########-------timing------#########
+Structure-From-Motion finished, 0 sec used
+0.2(0.2) seconds on Bundle Adjustment (+)
+0.2(0.2) seconds on Bundle Adjustment (*)
+#############################
+----------------------------------------------------------------
+Run full 3D reconstruction, finished
+Totally 0.000 seconds used
+
+
+Run dense reconstruction, begin...
+Save to test2.nvm ... done
+
+#############################
+Undistorting 6 images in model #0
+param_undistortion_thread_num = 0
+NOTE: using 8 threads...
+#00: img1 -> 00000000.jpg, 0.101 sec
+#03: img5 -> 00000004.jpg, 0.107 sec
+#01: img2 -> 00000002.jpg, 0.108 sec
+#00: img3 -> 00000001.jpg, 0.097 sec
+#01: img4 -> 00000003.jpg, 0.106 sec
+#03: img6 -> 00000005.jpg, 0.111 sec
+----------------------------------------------------------------
+Running Yasutaka Furukawa's CMVS tool...
+cmvs /home/aakash/Desktop/CV/test2.nvm.cmvs/00/ 50 8
+genOption /home/aakash/Desktop/CV/test2.nvm.cmvs/00/ 1 2 0.700000 7 3 8
+1 cluster is generated for pmvs reconstruction.
+pmvs2 /home/aakash/Desktop/CV/test2.nvm.cmvs/00/ option-0000
+This may take a little more time, waiting...
+3 seconds were used by PMVS
+Loading option-0000.ply, 12944 vertices ...
+
+#############################
+You can manually remove bad MVS points:
+1. Switch to dense MVS points mode;
+2. Hit F1 key to enter the selection mode;
+3. Select points by dragging a rectangle;
+4. Hit DELETE to delete the selected points.
+
+#############################
+Save to test2.nvm ... done
+Save /home/aakash/Desktop/CV/test2.0.ply ...done
+----------------------------------------------------------------
+Run dense reconstruction, finished
+Totally 3.000 seconds used
+

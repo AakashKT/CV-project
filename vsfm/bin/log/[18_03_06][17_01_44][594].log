@@ -1,0 +1,121 @@
+0: 161129-ECE-Paris_Lille
+image_size:	648x430
+1: 39429681525_2411166fcb_b
+image_size:	1024x653
+2: institut-de-france--acad-mie-fran-aise--from-pont-168194249-59fb89deaad52b00372925c3
+image_size:	768x512
+3: linstitut-de-france-coupole-de-lacadmie-franaise-building-paris-france-APMWBM
+image_size:	1300x1055
+4: paris-academie-francaise
+image_size:	300x450
+Loading image pixel data ...done in 0s
+
+Compute Missing Pairwise Matching, begin...
+********* WARNING ***********
+More than 502MB of graphic memory may be allocated
+under the default settings. If the program halts here,
+adjust parameters to save memory and rerun the task: 
+    [Tools->Enable GPU->Set Maximum DIM]
+Note some octaves may be automatically skipped
+SIFT: 0000, 648x430, 	2780, 0.67sec
+SIFT: 0001, 1024x653, 	4635, 0.11sec
+SIFT: 0002, 768x512, 	3699, 0.04sec
+SIFT: 0003, 1300x1055, 	10067, 0.20sec
+SIFT: 0004, 300x450, 	1356, 0.02sec
+
+###########-------timing------#########
+5 Feature Detection finished, 1 sec used
+#############################
+
+10 pairs to compute match
+NOTE: using 2 matching workers
+0000 and 0001: 67 matches, 0.08sec, #1
+0000 and 0001: [50/67], H[24], 0.00sec
+0000 and 0002: 50 matches, 0.06sec, #1
+0000 and 0002: [37/50], H[26], 0.00sec
+0001 and 0002: 208 matches, 0.10sec, #1
+0001 and 0002: [194/208], H[147], 0.00sec
+0002 and 0003: 41 matches, 0.30sec, #0
+0002 and 0003: [15/41], H[5], 0.09sec
+0000 and 0004: 43 matches, 0.01sec, #0
+0000 and 0004: [33/43], H[10], 0.00sec
+0001 and 0004: 86 matches, 0.01sec, #0
+0000 and 0003: 39 matches, 0.16sec, #1
+0001 and 0004: [71/86], H[29], 0.00sec
+0002 and 0004: 101 matches, 0.01sec, #0
+0002 and 0004: [95/101], H[30], 0.00sec
+0003 and 0004: 52 matches, 0.02sec, #0
+0000 and 0003: [11/39], H[5], 0.06sec
+0003 and 0004: [21/52], H[5], 0.08sec
+0001 and 0003: 36 matches, 0.20sec, #1
+0001 and 0003: [12/36], H[6], 0.06sec
+
+###########-------timing------#########
+10 Image Match finished, 1 sec used
+#############################
+
+----------------------------------------------------------------
+Compute Missing Pairwise Matching, finished
+Totally 2.000 seconds used
+
+
+Run full 3D reconstruction, begin...
+6 pairs have two-view models
+10 pairs have fundamental matrices
+Initialize with ins..925c3 and par..caise
+94 3D points initialized from two images
+PBA library version = 105
+PBA: 94 3D pts, 2 cams and 188 projs...
+PBA: 0.061 -> 0.042 (2 LMs in 0.73sec)
+Focal Length : [921.600]->[923.791]
+Focal Length : [540.000]->[539.336]
+
+#############################
+#3: [394..fcb_b] sees 101 (+160) 3D points
+Estimated Focal Length [528][0.52W]
+# 159 projs (53 pts and 0 merges)
+PBA: 147 3D pts, 3 cams and 347 projs...
+PBA: 1.764 -> 0.639 (47 LMs in 0.11sec)
+
+**************************************
+#3/3:  162 projs and 53 pts added.
+PBA: 147 3D pts, 3 cams and 350 projs...
+PBA: 0.065 -> 0.063 (4 LMs in 0.01sec)
+PBA: 147 3D pts, 3 cams and 350 projs...
+PBA: 0.063 -> 0.062 (5 LMs in 0.01sec)
+Focal Length : [528.206]->[558.495]
+Radial Distortion : [-0.093 -> -41]
+
+#############################
+#4: [161..Lille] sees 60 (+58) 3D points
+Estimated Focal Length [332][0.51W]
+# 139 projs (52 pts and 0 merges)
+PBA: 199 3D pts, 4 cams and 489 projs...
+PBA: 1.201 -> 0.242 (10 LMs in 0.14sec)
+#points w/ large errors:	1
+Focal Length : [332.125]->[181.824]
+Radial Distortion : [-0.039 -> -40]
+END: No more images to add [0 projs]
+
+#############################
+Failed to find two images for initialization
+Resuming SfM finished, 1 sec used
+
+---------------------------------------------------
+4 cams, 200 pts (3+: 68)
+489 projections (3+: 227)
+---------------------------------------------------
+1 model(s) reconstructed from 5 images;
+4 modeled; 0 reused; 0 EXIF; 
+0MB(0) used to store feature location.
+---------------------------------------------------
+
+########-------timing------#########
+Structure-From-Motion finished, 2 sec used
+2.1(2.1) seconds on Bundle Adjustment (+)
+1.0(1.0) seconds on Bundle Adjustment (*)
+#############################
+----------------------------------------------------------------
+Run full 3D reconstruction, finished
+Totally 2.000 seconds used
+
