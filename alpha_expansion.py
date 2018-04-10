@@ -144,9 +144,11 @@ def makeMove(graph, affinityFunction, alphaLabel, assignment):
     newGraph = newGraph.DirectedVersion()
 
     _, partition = maxflow(newGraph, alpha, alphaBar)
+    # now the partition returns if a vertex is reachable by alpha or alpha bar
 
+    # since the cut defines the assignment hence if i is reachable by alpha then (i,alpha) is on the cut and vice versa. So if partition[i]=alphaBar then the assignment is alpha
     for i, assigned in enumerate(partition):
-        if (assigned == alpha):
+        if (assigned == alphaBar):
             assignment[i] = alphaLabel
 
     return assignment
