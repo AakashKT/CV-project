@@ -99,7 +99,7 @@ def maxflow(graph, u, v):
     return maximumFlow, partition
 
 
-def makeMove(graph, affinityFunction, alphaLabel, assignment):
+def makeMove(graph, EnergyFunction, alphaLabel, assignment):
     """
     @type graph: Graph
     @type u: int
@@ -120,24 +120,24 @@ def makeMove(graph, affinityFunction, alphaLabel, assignment):
                 continue
 
             if(assignment[vertex] == assignment[u]):
-                edgeList.append((vertex, u, affinityFunction(
+                edgeList.append((vertex, u, EnergyFunction(
                     vertex, assignment[vertex], u, assignment[u])))
             else:
                 newNode = numberOfVertices
                 numberOfVertices = numberOfVertices+1
-                edgeList.append((vertex, newNode, affinityFunction(
+                edgeList.append((vertex, newNode, EnergyFunction(
                     vertex, assignment[vertex], u, alphaLabel)))
-                edgeList.append((newNode, u, affinityFunction(
+                edgeList.append((newNode, u, EnergyFunction(
                     vertex, alphaLabel, u, assignment[u])))
-                edgeList.append((newNode, alphaBar, affinityFunction(
+                edgeList.append((newNode, alphaBar, EnergyFunction(
                     vertex, assignment[vertex], u, assignment[u])))
 
         if(assignment[vertex] != alphaLabel):
             edgeList.append(
-                (vertex, alphaBar, affinityFunction(vertex, assignment[vertex])))
+                (vertex, alphaBar, EnergyFunction(vertex, assignment[vertex])))
 
         edgeList.append(
-            (vertex, alpha, affinityFunction(vertex, alphaLabel))
+            (vertex, alpha, EnergyFunction(vertex, alphaLabel))
         )
 
     newGraph = Graph(numberOfVertices=numberOfVertices, edgeList=edgeList)
@@ -152,6 +152,23 @@ def makeMove(graph, affinityFunction, alphaLabel, assignment):
             assignment[i] = alphaLabel
 
     return assignment
+
+
+def alpha_expansion(graph, EnergyFunction, numberOfLabels, iterations):
+    """
+    @type graph: Graph
+    @type numberOfLabels: int
+    @type iterations: int
+    """
+    # initializing all the labels as 0
+    assignment = [0 for _ in graph.numberOfVertices]
+    curLabel = 1
+    for iteration in range(iterations):
+        curLabel = (curLabel+1) % numberOfLabels
+        assignment = makeMove(graph=graph, EnergyFunction=EnergyFunction,
+                              alphaLabel=curLabel, assignment=assignment)
+    return assignment
+
 
 # edgel = [
 #     (0, 1, 2),
