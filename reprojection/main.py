@@ -1,9 +1,8 @@
 import os, sys, json, re
-import common_func as cf 
 import numpy as np
 from numpy.linalg import inv
 
-from scipy.misc import imread, imsave
+from scipy.misc import imread, imsave, imresize
 
 GLOBAL_DICT = {
 	'00000000.jpg':0,
@@ -30,6 +29,9 @@ GLOBAL_DICT = {
 	'00000021.jpg':21,
 	'00000022.jpg':22
 }
+
+ROWS = 900;
+COLS = 1000;
 
 class Camera():
 
@@ -162,7 +164,7 @@ def shift_coords(coord, size_r, size_c):
 	r = coord[0] + size_r / 2;
 	c = coord[1] + size_c / 2;
 
-	return r, c;
+	return [r, c];
 
 
 def temp_func(t_image, cameras, points, target_image):
@@ -185,8 +187,8 @@ def temp_func(t_image, cameras, points, target_image):
 	imsave('aakash.jpg', t_image);
 
 def get_reprojection(model_file, camera_file, image_dir, target_image):
-	extent_r = 700;
-	extent_c = 700;
+	extent_r = 300;
+	extent_c = 300;
 
 	points = get_3d_points(model_file);
 	cameras = get_cameras(camera_file);
@@ -200,10 +202,12 @@ def get_reprojection(model_file, camera_file, image_dir, target_image):
 	temp_func(t_image, cameras, points, target_image);
 
 	final_projection = [];
-	zero_pix = [];
-	for i in range(t_image.shape[1]):
-		zero_pix.append([]);
 	for i in range(t_image.shape[0]):
+		zero_pix = [];
+		for i in range(t_image.shape[1]):
+			temp = [];
+			zero_pix.append(temp);
+
 		final_projection.append(zero_pix);
 
 	t_cam = cameras[target_image];
@@ -217,19 +221,23 @@ def get_reprojection(model_file, camera_file, image_dir, target_image):
 			temp = {};
 
 			og_location = cam.get_img_coord(vec);
-			og_location = shift_coords((int(round(og_location[1])), int(round(og_location[0]))), 600, 800);
+			og_location = shift_coords((int(round(og_location[1])), int(round(og_location[0]))), ROWS, COLS);
+			if og_location[0] >= ROWS:
+				og_location[0] = ROWS-1;
+			if og_location[1] >= COLS:
+				og_location[1] = COLS-1;
 
 			p_near = cam.get_img_coord(cam.get_p_near(vec));
-			p_near = shift_coords((int(round(p_near[1])), int(round(p_near[0]))), 600, 800);
+			p_near = shift_coords((int(round(p_near[1])), int(round(p_near[0]))), ROWS, COLS);
 
 			p_far = cam.get_img_coord(cam.get_p_far(vec));
-			p_far = shift_coords((int(round(p_far[1])), int(round(p_far[0]))), 600, 800);
+			p_far = shift_coords((int(round(p_far[1])), int(round(p_far[0]))), ROWS, COLS);
 
-			temp['original_location'] = og_location;
-			temp['p_location'] = (x, y);
-			temp['pfar_location'] = p_far;
-			temp['pnear_location'] = p_near;
-			temp['color'] = (int(point[3]), int(point[4]), int(point[5]));
+			temp['original_location'] = np.array(og_location, dtype=np.float);
+			temp['p_location'] = np.array((x, y), dtype=np.float);
+			temp['pfar_location'] = np.array(p_far, dtype=np.float);
+			temp['pnear_location'] = np.array(p_near, dtype=np.float);
+			temp['color'] = np.array((int(point[3]), int(point[4]), int(point[5])), dtype=np.float);
 			temp['label'] = GLOBAL_DICT[img];
 
 			final_projection[x][y].append(temp);
@@ -242,10 +250,10 @@ def get_reprojection(model_file, camera_file, image_dir, target_image):
 		for j in range(extent_c, extent_c+c):
 			temp = {};
 
-			temp['original_location'] = (i-extent_r, j-extent_c);
-			temp['p_location'] = (i, j);
-			temp['pfar_location'] = (i, j);
-			temp['pnear_location'] = (i, j);
+			temp['original_location'] = np.array((i-extent_r, j-extent_c), dtype=np.float);
+			temp['p_location'] = np.array((i, j), dtype=np.float);
+			temp['pfar_location'] = np.array((i, j), dtype=np.float);
+			temp['pnear_location'] = np.array((i, j), dtype=np.float);
 			temp['color'] = t_image[i, j, :];
 			temp['label'] = GLOBAL_DICT[target_image];
 
@@ -267,4 +275,3 @@ if __name__ == '__main__':
 	a4 = sys.argv[4];
 
 	get_reprojection(a1, a2, a3, a4);
-	

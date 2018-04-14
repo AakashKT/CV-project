@@ -2,6 +2,8 @@ import cv2
 import scipy
 import numpy as np
 
+from scipy.stats import entropy
+
 
 class Image:
     window = 11
@@ -80,7 +82,9 @@ def klDivergenceList(referenceImage, images):
         histSize=[256, 256, 256],
         ranges=[0, 256, 0, 256, 0, 256, ]
     )
-    referenceHist = referenceHist/np.size(referenceImage)
+    e=0.001
+    referenceHist = referenceHist + (referenceHist==0)*e
+    referenceHist = referenceHist/np.sum(referenceHist)
     klDivList = []
     for image in images:
         hist = cv2.calcHist(
@@ -90,7 +94,9 @@ def klDivergenceList(referenceImage, images):
             histSize=[256, 256, 256],
             ranges=[0, 256, 0, 256, 0, 256, ]
         )
-        hist = hist/np.size(image)
-        klDiv = scipy.stats.entropy(pk=referenceHist, qk=hist, base=2)
+        hist = hist + (hist==0)*e
+        hist  =hist/np.sum(hist)
+        klDiv = entropy(pk=referenceHist.flatten(), qk=hist.flatten(), base=2)
+        print klDiv
         klDivList.append(klDiv)
     return klDivList

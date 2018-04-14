@@ -9,7 +9,6 @@ class Graph:
 
     def __init__(self, numberOfVertices, edgeList, undirected=True):
         self.numberOfVertices = numberOfVertices
-        self.__edgeList__ = edgeList
         self.undirected = undirected
         self.adjacencyList = [{} for _ in range(self.numberOfVertices)]
         for u, v, weight in edgeList:
@@ -20,8 +19,10 @@ class Graph:
         """
         @rtype:Graph
         """
-        newGraph = Graph(numberOfVertices=self.numberOfVertices,
-                         edgeList=self.__edgeList__)
+        newGraph = Graph(self.numberOfVertices,[],self.undirected)
+        for u in range(self.numberOfVertices):
+            for v in self.adjacencyList[u].keys():
+                newGraph.adjacencyList[u][v] = self.adjacencyList[u][v]
         return newGraph
 
     def DirectedVersion(self):
@@ -83,7 +84,10 @@ def maxflow(graph, u, v):
             bottleNeck = min(
                 residualGraph.adjacencyList[parents[i]][i], bottleNeck)
             i = parents[i]
+            print i,
         # update the residual graph accordingly
+        print i
+        print bottleNeck
         i = v
         while i != u:
             residualGraph.adjacencyList[parents[i]
@@ -135,20 +139,25 @@ def makeMove(graph, EnergyFunction, alphaLabel, assignment):
                 (vertex, alphaBar, EnergyFunction(vertex, assignment[vertex])))
         else:
             edgeList.append(
-                (vertex, alphaBar, float("inf")))
+                (vertex, alphaBar, 1000000000))
 
         edgeList.append(
             (vertex, alpha, EnergyFunction(vertex, alphaLabel))
         )
 
     newGraph = Graph(numberOfVertices=numberOfVertices, edgeList=edgeList)
+    del edgeList[:]
+    del edgeList
     newGraph = newGraph.DirectedVersion()
 
-    _, partition = maxflow(newGraph, alpha, alphaBar)
+    print "line 148"
+    maxim, partition = maxflow(newGraph, alpha, alphaBar)
+    print maxim
     # now the partition returns if a vertex is reachable by alpha or alpha bar
 
     # since the cut defines the assignment hence if i is reachable by alpha then (i,alpha) is on the cut and vice versa. So if partition[i]=alphaBar then the assignment is alpha
-    for i, assigned in enumerate(partition):
+    for i in range(graph.numberOfVertices):
+        assigned    = partition[i]
         if (assigned == alphaBar):
             assignment[i] = alphaLabel
 
@@ -162,7 +171,7 @@ def alpha_expansion(graph, EnergyFunction, numberOfLabels, iterations):
     @type iterations: int
     """
     # initializing all the labels as 0
-    assignment = [0 for _ in graph.numberOfVertices]
+    assignment = [0 for _ in range(graph.numberOfVertices)]
     curLabel = 0
     for iteration in range(iterations):
         curLabel = (curLabel+1) % numberOfLabels
