@@ -116,8 +116,6 @@ def makeMove(graph, EnergyFunction, alphaLabel, assignment):
     edgeList = []
     for vertex in range(graph.numberOfVertices):
         for u in graph.adjacencyList[vertex].keys():
-            if graph.adjacencyList[vertex][u] == 0:
-                continue
 
             if(assignment[vertex] == assignment[u]):
                 edgeList.append((vertex, u, EnergyFunction(
@@ -135,6 +133,9 @@ def makeMove(graph, EnergyFunction, alphaLabel, assignment):
         if(assignment[vertex] != alphaLabel):
             edgeList.append(
                 (vertex, alphaBar, EnergyFunction(vertex, assignment[vertex])))
+        else:
+            edgeList.append(
+                (vertex, alphaBar, float("inf")))
 
         edgeList.append(
             (vertex, alpha, EnergyFunction(vertex, alphaLabel))
@@ -162,7 +163,7 @@ def alpha_expansion(graph, EnergyFunction, numberOfLabels, iterations):
     """
     # initializing all the labels as 0
     assignment = [0 for _ in graph.numberOfVertices]
-    curLabel = 1
+    curLabel = 0
     for iteration in range(iterations):
         curLabel = (curLabel+1) % numberOfLabels
         assignment = makeMove(graph=graph, EnergyFunction=EnergyFunction,
