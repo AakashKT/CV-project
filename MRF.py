@@ -45,7 +45,7 @@ def ReferenceEnergy(pixel, label):
         return 0
     elif (label == -1):
         return 10000
-    elif(k[0] >= 0 and k[0] < Images[ReferenceLabel].image.shape[0] and k[1] >= 0 and k[1] < Images[ReferenceLabel].image.shape[1]):
+    elif(k[0] >= windowSize and k[0] < Images[ReferenceLabel].image.shape[0]-windowSize and k[1] >= windowSize and k[1] < Images[ReferenceLabel].image.shape[1]-windowSize):
         return 1000000000
     else:
         return 100
@@ -103,9 +103,9 @@ def CompressPixelList(pixelList):
         color = color+pixel["color"]
         appearance = appearance + AppearanceEnergy(p, key)
         contrast = contrast + \
-            Images[key].contrast[oPixel[0], oPixel[1]]
+            Images[key].contrast[int(oPixel[0]), int(oPixel[1])]
         reference = reference+ReferenceEnergy(p, key)
-        sobel = sobel+Images[key].sobel[oPixel[0], oPixel[1]]
+        sobel = sobel+Images[key].sobel[int(oPixel[0]), int(oPixel[1])]
         freq = freq+1
     plow = plow/freq
     phigh = phigh/freq
@@ -125,7 +125,10 @@ def CompressPixelList(pixelList):
     return bucket
 
 
+def run_py_max_flow():
+    global ReprojectedImage;
 
+    
 
 def init(images, ri):
     print "inside init"
@@ -145,14 +148,15 @@ def init(images, ri):
 
 
 def EnergyFunction(u, labelu, v=None, labelv=None):
+    global ReprojectedImage
+    ReprojectedImage
     if labelu == 0 or labelv == 0:
         return 1000000000
     if v is None:
         labelu = labelu-1
-        print u
-        print u/TargetImageSize[1],u % TargetImageSize[1]
         pixelBucket = ReprojectedImage[u /
                                        TargetImageSize[1]][u % TargetImageSize[1]]
+        
         if labelu in pixelBucket.keys():
             return pixelBucket[labelu]["unary"]
         else:
@@ -165,7 +169,7 @@ def EnergyFunction(u, labelu, v=None, labelv=None):
         pixelBucketv = ReprojectedImage[v /
                                         TargetImageSize[1]][v % TargetImageSize[1]]
         if labelu in pixelBucketu.keys() and labelv in pixelBucketv.keys():
-            return pixelBucket[labelu]["sobel"]+pixelBucketv[labelv]["sobel"]
+            return pixelBucketu[labelu]["edge"]+pixelBucketv[labelv]["edge"]
         else:
             return 1000000000
 
@@ -191,16 +195,18 @@ def GetImage(assignment):
     for i, pixelBucketList in enumerate(ReprojectedImage):
         for j, pixelBucket in enumerate(pixelBucketList):
             assign = assignment[i*len(ReprojectedImage[1])+j]
-            if assign == 0:
+            if assign == 0 or len(pixelBucket.keys()) == 0:
                 image[i, j, :] = 0
-            else:
+            elif assign-1 in pixelBucket.keys():
                 image[i, j, :] = pixelBucket[assign-1]["color"]
+            else:
+                image[i, j, :] = 0
 
     return image;
 
 def alpha_expansion_call(graph):
     assignment = alpha_expansion.alpha_expansion(
-        graph=graph, EnergyFunction=EnergyFunction, numberOfLabels=len(Images)+1, iterations=1);
+        graph=graph, EnergyFunction=EnergyFunction, numberOfLabels=len(Images)+1, iterations=10);
 
     return assignment;
 

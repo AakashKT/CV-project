@@ -1,5 +1,5 @@
 from collections import deque
-
+import maxflow
 
 class Graph:
     """
@@ -62,7 +62,7 @@ def getBfsTree(graph, u, v):
     return parents
 
 
-def maxflow(graph, u, v):
+def Maxflow(graph, u, v):
     """
     @type graph:Graph
     @type u:int
@@ -76,7 +76,7 @@ def maxflow(graph, u, v):
         # check if vertex v is reachable
         if parents[v] is None:
             break
-        # bottleNeck will be the maxflow for the current path
+        # bottleNeck will be the Maxflowmaxflow for the current path
         bottleNeck = residualGraph.adjacencyList[parents[v]][v]
         maximumFlow = maximumFlow+bottleNeck
         i = v
@@ -84,10 +84,7 @@ def maxflow(graph, u, v):
             bottleNeck = min(
                 residualGraph.adjacencyList[parents[i]][i], bottleNeck)
             i = parents[i]
-            print i,
         # update the residual graph accordingly
-        print i
-        print bottleNeck
         i = v
         while i != u:
             residualGraph.adjacencyList[parents[i]
@@ -118,48 +115,64 @@ def makeMove(graph, EnergyFunction, alphaLabel, assignment):
     alphaBar = numberOfVertices
     numberOfVertices = numberOfVertices+1
     edgeList = []
+    newGraph = maxflow.GraphFloat()
+    newGraph.add_nodes(graph.numberOfVertices)
     for vertex in range(graph.numberOfVertices):
         for u in graph.adjacencyList[vertex].keys():
 
             if(assignment[vertex] == assignment[u]):
-                edgeList.append((vertex, u, EnergyFunction(
-                    vertex, assignment[vertex], u, assignment[u])))
+                e = EnergyFunction(
+                    vertex, assignment[vertex], u, assignment[u])
+                newGraph.add_edge(vertex,u,e,e)
+                # edgeList.append((vertex, u, EnergyFunction(
+                #     vertex, assignment[vertex], u, assignment[u])))
             else:
-                newNode = numberOfVertices
-                numberOfVertices = numberOfVertices+1
-                edgeList.append((vertex, newNode, EnergyFunction(
-                    vertex, assignment[vertex], u, alphaLabel)))
-                edgeList.append((newNode, u, EnergyFunction(
-                    vertex, alphaLabel, u, assignment[u])))
-                edgeList.append((newNode, alphaBar, EnergyFunction(
-                    vertex, assignment[vertex], u, assignment[u])))
-
+                newNode = newGraph.add_node()
+                # numberOfVertices = numberOfVertices+1
+                e = EnergyFunction(
+                    vertex, assignment[vertex], u, alphaLabel)
+                # edgeList.append((vertex, newNode, EnergyFunction(
+                #     vertex, assignment[vertex], u, alphaLabel)))
+                newGraph.add_edge(vertex,newNode,e,e)
+                e=EnergyFunction(
+                    vertex, alphaLabel, u, assignment[u])
+                # edgeList.append((newNode, u, EnergyFunction(
+                #     vertex, alphaLabel, u, assignment[u])))
+                newGraph.add_edge(newNode,u,e,e)
+                e=EnergyFunction(
+                    vertex, assignment[vertex], u, assignment[u])
+                # edgeList.append((newNode, alphaBar, EnergyFunction(
+                #     vertex, assignment[vertex], u, assignment[u])))
+                newGraph.add_tedge(newNode,0,e)
         if(assignment[vertex] != alphaLabel):
-            edgeList.append(
-                (vertex, alphaBar, EnergyFunction(vertex, assignment[vertex])))
+            e=EnergyFunction(vertex, assignment[vertex])
+            # edgeList.append(
+            #     (vertex, alphaBar, EnergyFunction(vertex, assignment[vertex])))
         else:
-            edgeList.append(
-                (vertex, alphaBar, 1000000000))
+            e = 1000000000
+            # edgeList.append(
+                # (vertex, alphaBar, 1000000000))
+        newGraph.add_tedge(vertex,EnergyFunction(vertex,alphaLabel),e)
+        # edgeList.append(
+        #     (vertex, alpha, EnergyFunction(vertex, alphaLabel))
+        # )
 
-        edgeList.append(
-            (vertex, alpha, EnergyFunction(vertex, alphaLabel))
-        )
-
-    newGraph = Graph(numberOfVertices=numberOfVertices, edgeList=edgeList)
-    del edgeList[:]
-    del edgeList
-    newGraph = newGraph.DirectedVersion()
+    # for e
+    # newGraph = Graph(numberOfVertices=numberOfVertices, edgeList=edgeList)
+    # del edgeList[:]
+    # del edgeList
+    # newGraph = newGraph.DirectedVersion()
 
     print "line 148"
-    maxim, partition = maxflow(newGraph, alpha, alphaBar)
-    print maxim
+    k = newGraph.maxflow()
+    print k
     # now the partition returns if a vertex is reachable by alpha or alpha bar
-
+    # print newGraph.get_segments()
     # since the cut defines the assignment hence if i is reachable by alpha then (i,alpha) is on the cut and vice versa. So if partition[i]=alphaBar then the assignment is alpha
     for i in range(graph.numberOfVertices):
-        assigned    = partition[i]
-        if (assigned == alphaBar):
+        if newGraph.get_segment(i):
             assignment[i] = alphaLabel
+
 
     return assignment
 
@@ -187,4 +200,4 @@ def alpha_expansion(graph, EnergyFunction, numberOfLabels, iterations):
 #     (2, 3, 1)
 # ]
 # g = Graph(4, edgel)
-# print maxflow(g, 0, 3)
+# print Maxflowmaxflow(g, 0, 3)

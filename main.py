@@ -14,21 +14,20 @@ if __name__ == '__main__':
 	img_dir = sys.argv[1];
 	all_images = [];
 	print "line 16"
-	for i in range(0, 10):
-		all_images.append(imread('%s0000000%d.jpg' % (img_dir, i)));
 
-	for i in range(10, 14):
-		all_images.append(imread('%s000000%d.jpg' % (img_dir, i)));
+	for i in range(len(reprj.GLOBAL_DICT)):
+		all_images.append(None);
+
+	for k, v in reprj.GLOBAL_DICT.items():
+		all_images[v] = imread('%s%s' % (img_dir, k));
 	
-	ri = reprj.get_reprojection('images_downsampled_2/dense.nvm.cmvs/00/models/option-0000.ply', 'images_downsampled_2/dense.nvm.cmvs/00/cameras_v2.txt', img_dir, '00000013.jpg');
-	print "line 24"
+	ri = reprj.get_reprojection('im_2_2/dense.nvm.cmvs/00/models/option-0000.ply', 'im_2_2/dense.nvm.cmvs/00/cameras_v2.txt', img_dir, '00000009.jpg');
+	
 	mrf.init(all_images, ri);
+	#mrf.run_py_max_flow();
+	ret_graph = mrf.gridGraph((2424, 2936));
 
+	label_assignment = mrf.alpha_expansion_call(ret_graph);
+	final_image = mrf.GetImage(label_assignment);
 
-	
-	# ret_graph = mrf.gridGraph((450, 500));
-
-	# label_assignment = mrf.alpha_expansion_call(ret_graph);
-	# final_image = mrf.GetImage(label_assignment);
-
-	# imsave('final.jpg', final_image);
+	imsave('final.jpg', final_image);

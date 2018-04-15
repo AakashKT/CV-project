@@ -97,6 +97,5 @@ def klDivergenceList(referenceImage, images):
         hist = hist + (hist==0)*e
         hist  =hist/np.sum(hist)
         klDiv = entropy(pk=referenceHist.flatten(), qk=hist.flatten(), base=2)
-        print klDiv
         klDivList.append(klDiv)
     return klDivList

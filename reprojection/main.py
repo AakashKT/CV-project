@@ -5,7 +5,7 @@ from numpy.linalg import inv
 from scipy.misc import imread, imsave, imresize
 
 GLOBAL_DICT = {
-	'00000000.jpg':0,
+	'00000000.jpg':9,
 	'00000001.jpg':1,
 	'00000002.jpg':2,
 	'00000003.jpg':3,
@@ -14,7 +14,7 @@ GLOBAL_DICT = {
 	'00000006.jpg':6,
 	'00000007.jpg':7,
 	'00000008.jpg':8,
-	'00000009.jpg':9,
+	'00000009.jpg':0,
 	'00000010.jpg':10,
 	'00000011.jpg':11,
 	'00000012.jpg':12,
@@ -24,18 +24,16 @@ GLOBAL_DICT = {
 	'00000016.jpg':16,
 	'00000017.jpg':17,
 	'00000018.jpg':18,
-	'00000019.jpg':19,
-	'00000020.jpg':20,
-	'00000021.jpg':21,
-	'00000022.jpg':22
+	# '00000019.jpg':19,
+	# '00000020.jpg':20,
+	# '00000021.jpg':21,
+	# '00000022.jpg':22
 }
-
-ROWS = 900;
-COLS = 1000;
 
 class Camera():
 
-	def __init__(self, focal_length, r_mat, t_vec, pos_vec):
+	def __init__(self, focal_length, r_mat, t_vec, pos_vec, size):
+		self.size = size;
 		self.k = np.zeros((3, 3), dtype=np.float);
 		self.c = np.zeros((3, 1), dtype=np.float);
 		self.intr = np.zeros((3, 4), dtype=np.float);
@@ -98,7 +96,7 @@ def get_3d_points(model_file):
 	return points;
 
 
-def get_cameras(camera_file):
+def get_cameras(image_dir, camera_file):
 	cameras = {};
 	n_cam = 0;
 	f = open(camera_file);
@@ -147,7 +145,8 @@ def get_cameras(camera_file):
 
 					curr_line += 1;
 
-				cameras[img_name] = Camera(focal_length, r_mat, t_vec, pos_vec);
+				img_r = imread(image_dir+img_name);
+				cameras[img_name] = Camera(focal_length, r_mat, t_vec, pos_vec, img_r.shape);
 
 			break;
 		else:
@@ -187,11 +186,11 @@ def temp_func(t_image, cameras, points, target_image):
 	imsave('aakash.jpg', t_image);
 
 def get_reprojection(model_file, camera_file, image_dir, target_image):
-	extent_r = 300;
-	extent_c = 300;
+	extent_r = 700;
+	extent_c = 700;
 
 	points = get_3d_points(model_file);
-	cameras = get_cameras(camera_file);
+	cameras = get_cameras(image_dir, camera_file);
 
 	og_t_image = imread(image_dir+target_image);
 	(r, c, a) = og_t_image.shape;
@@ -217,34 +216,36 @@ def get_reprojection(model_file, camera_file, image_dir, target_image):
 
 		x, y = shift_coords((int(round(img_coord[1])), int(round(img_coord[0]))), t_image.shape[0], t_image.shape[1]);
 
-		for img, cam in cameras.items():
-			temp = {};
+		if x >= r+2*extent_r-1 or y >= c+2*extent_c-1 or x < 0 or y < 0:
+			continue;
+		else:
+			for img, cam in cameras.items():
+				temp = {};
 
-			og_location = cam.get_img_coord(vec);
-			og_location = shift_coords((int(round(og_location[1])), int(round(og_location[0]))), ROWS, COLS);
-			if og_location[0] >= ROWS:
-				og_location[0] = ROWS-1;
-			if og_location[1] >= COLS:
-				og_location[1] = COLS-1;
+				og_location = cam.get_img_coord(vec);
+				og_location = shift_coords((int(round(og_location[1])), int(round(og_location[0]))), cam.size[0], cam.size[1]);
 
-			p_near = cam.get_img_coord(cam.get_p_near(vec));
-			p_near = shift_coords((int(round(p_near[1])), int(round(p_near[0]))), ROWS, COLS);
+				if og_location[0] >= cam.size[0]-1 or og_location[1] >= cam.size[1]-1 or og_location[0] < 0 or og_location[1] < 0:
+					continue;
+				else:
+					p_near = cam.get_img_coord(cam.get_p_near(vec));
+					p_near = shift_coords((int(round(p_near[1])), int(round(p_near[0]))), cam.size[0], cam.size[1]);
 
-			p_far = cam.get_img_coord(cam.get_p_far(vec));
-			p_far = shift_coords((int(round(p_far[1])), int(round(p_far[0]))), ROWS, COLS);
+					p_far = cam.get_img_coord(cam.get_p_far(vec));
+					p_far = shift_coords((int(round(p_far[1])), int(round(p_far[0]))), cam.size[0], cam.size[1]);
 
-			temp['original_location'] = np.array(og_location, dtype=np.float);
-			temp['p_location'] = np.array((x, y), dtype=np.float);
-			temp['pfar_location'] = np.array(p_far, dtype=np.float);
-			temp['pnear_location'] = np.array(p_near, dtype=np.float);
-			temp['color'] = np.array((int(point[3]), int(point[4]), int(point[5])), dtype=np.float);
-			temp['label'] = GLOBAL_DICT[img];
+					temp['original_location'] = np.array(og_location, dtype=np.float);
+					temp['p_location'] = np.array((x, y), dtype=np.float);
+					temp['pfar_location'] = np.array(p_far, dtype=np.float);
+					temp['pnear_location'] = np.array(p_near, dtype=np.float);
+					temp['color'] = np.array((int(point[3]), int(point[4]), int(point[5])), dtype=np.float);
+					temp['label'] = GLOBAL_DICT[img];
 
-			final_projection[x][y].append(temp);
-			final_projection[x+1][y].append(temp);
-			final_projection[x-1][y].append(temp);
-			final_projection[x][y+1].append(temp);
-			final_projection[x][y-1].append(temp);
+					final_projection[x][y].append(temp);
+					final_projection[x+1][y].append(temp);
+					final_projection[x-1][y].append(temp);
+					final_projection[x][y+1].append(temp);
+					final_projection[x][y-1].append(temp);
 
 	for i in range(extent_r, extent_r+r):
 		for j in range(extent_c, extent_c+c):
